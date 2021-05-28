@@ -1,0 +1,66 @@
+{
+  "materials": {
+    "material_1": {
+      "name": "Мягкая черепица",
+      "code": "sch"
+    },
+    "material_2": {
+      "name": "Фальцевая кровля",
+      "code": "fal"
+    },
+    "material_3": {
+      "name": "Шифер",
+      "code": "shf"
+    },
+    "material_4": {
+      "name": "Профнастил",
+      "code": "prof"
+    },
+    "material_5": {
+      "name": "Рубероид",
+      "code": "rub"
+    },
+    "material_6": {
+      "name": "Черепица",
+      "code": "ch"
+    }
+  },
+  "konek": {
+    "konek_1": {
+      "name": "Круглый",
+      "code": "crc"
+    },
+    "konek_2": {
+      "name": "Треугольный",
+      "code": "tri"
+    },
+    "konek_3": {
+      "name": "Фигурный",
+      "code": "fig"
+    }
+  },
+  "chimneys": {
+    "chimney_1": {
+      "name": "1 дымоход",
+      "code": "one"
+    },
+    "chimney_2": {
+      "name": "2 дымохода",
+      "code": "two"
+    },
+    "chimney_3": {
+      "name": "3 дымохода",
+      "code": "three"
+    }
+  },
+  "front": {
+    "front-1": {
+      "name": "Горючий",
+      "code": "gor"
+    },
+    "front-2": {
+      "name": "Негорючий",
+      "code": "ngor"
+    }
+  }
+}

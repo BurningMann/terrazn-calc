@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main id="content" class="calc-content">
+        <div class="row">
+        <h1 class="h1_title">Калькулятор расчета</h1>
+        </div>
+        <div class="calc_wrapper" id="app">
+                <div class="calc_top_bar">
+                    <div class="steps_info">
+                        Шаг <span class="current_step">1</span> из 8: <span class="last_hidden">выберите</span> <span class="current_section">форму крыши</span>
+                    </div>
+                    <div class="steps_circles">
+                        <div class="step_circle active"></div>
+                        <div class="step_circle"></div>
+                        <div class="step_circle"></div>
+                        <div class="step_circle"></div>
+                        <div class="step_circle"></div>
+                        <div class="step_circle"></div>
+                        <div class="step_circle"></div>
+                        <div class="step_circle"></div>
+                    </div>
+                </div>
+        
+                <div class="options_section" v-if="currentStep == 1">
+                    <div class="option_element"  v-for="roof in roofs" :key="roof.code" :data-roof="roof.pathName" @click="mainRoof = roof.pathName,fullImage(roof.code)">
+                        <img :src="imgPath + roof.pathName + '/' + roof.code + '.png'">
+                        <p class="title">{{roof.name}}</p>
+                    </div>         
+                </div>
+
+                <div class="options_section" v-if="currentStep == 2">
+                    <div class="option_element"  v-for="material in params.materials" :key="material.code"  @click="fullImage(material.code)">
+                        <img :src="imgPath + mainRoof + '/material/' + material.code + '.png'">
+                        <p class="title">{{material.name}}</p>
+                    </div>   
+                </div>
+
+                <div class="full_img_section">
+                    <img v-if="mainRoof != '' " :src="fullImgPath">
+                </div>
+                <div class="calc_bottom_bar">
+
+                    <div class="btn prev_btn" v-if="currentStep > 1" @click="Step()">Шаг 
+                        <span class="prev_step">{{currentStep - 1}}</span> : 
+                        <span class="prev_cat"><!-- {{steps[step_currentStep - 1_name]}} --></span> 
+                    </div>
+
+                    <div class="btn next_btn" @click="NextStep()">Шаг 
+                        <span class="next_step">{{currentStep + 1}}</span> : 
+                        <span class="next_cat">{{steps.step_1_name}}</span>
+                    </div>
+
+                </div>
+            </div>
+        </main> 
+        <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script> 
+        <script src="jq.js"></script>
+        <script src="scripts.js"></script>
+</body>
+</html>

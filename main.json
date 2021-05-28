@@ -1,0 +1,32 @@
+{
+  "Chetyrekhskatnaya":{
+    "name": "Четырёхскатная",
+    "code": "ct",
+    "pathName": "Chetyrekhskatnaya"
+  },
+  "Sharovaya":{
+    "name": "Шаровая",
+    "code": "sh",
+    "pathName": "Sharovaya"
+  },
+  "Odnokatnaya":{
+    "name": "Однокатная",
+    "code": "od",
+    "pathName": "Odnokatnaya"
+  },
+  "":{
+    "name": "Двускатная",
+    "code": "dv",
+    "pathName": "Dvuskatnaya"
+  },
+  "Mansardnaya":{
+    "name": "Мансардная",
+    "code": "man",
+    "pathName": "Mansardnaya"
+  },
+  "Poluvalmovaya":{
+    "name": "Полувальмовая",
+    "code": "pol",
+    "pathName": "Poluvalmovaya"
+  }
+}
