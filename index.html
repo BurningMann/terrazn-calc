@@ -15,7 +15,7 @@
         <div class="calc_wrapper" id="app">
                 <div class="calc_top_bar">
                     <div class="steps_info">
-                        Шаг <span class="current_step">1</span> из 8: <span class="last_hidden">выберите</span> <span class="current_section">форму крыши</span>
+                        Шаг <span class="current_step">{{currentStep}}</span> из 8: <span class="current_section">{{stepChoose[currentStep-1]}}</span>
                     </div>
                     <div class="steps_circles">
                         <div class="step_circle active"></div>
@@ -30,32 +30,228 @@
                 </div>
         
                 <div class="options_section" v-if="currentStep == 1">
-                    <div class="option_element"  v-for="roof in roofs" :key="roof.code" :data-roof="roof.pathName" @click="mainRoof = roof.pathName,fullImage(roof.code)">
-                        <img :src="imgPath + roof.pathName + '/' + roof.code + '.png'">
+                    <div class="option_element"  v-for="roof in roofs" :key="roof.code" :data-roof="roof.pathName" @click="mainRoof = roof.pathName,result.shape = roof.name,fullImage(roof.code, '/'),CleanCounters()">
+                        <img :src="`${imgPath + roof.pathName}/${roof.code}.png`">
                         <p class="title">{{roof.name}}</p>
                     </div>         
                 </div>
 
                 <div class="options_section" v-if="currentStep == 2">
-                    <div class="option_element"  v-for="material in params.materials" :key="material.code"  @click="fullImage(material.code)">
-                        <img :src="imgPath + mainRoof + '/material/' + material.code + '.png'">
+                    <div class="option_element"  
+                        v-for="material in params.materials" 
+                        :key="material.code"  
+                        @click="optionsCodes.material_code = material.code,
+                        result.material = material.name,
+                        fullImage(material.code, '/material/'),
+                        CleanCounters()
+                        "
+                    >
+                        <img :src="`${imgPath + mainRoof}/material/${material.code}.png`">
                         <p class="title">{{material.name}}</p>
                     </div>   
                 </div>
 
-                <div class="full_img_section">
+                <div class="options_section" v-if="currentStep == 3">
+                    <div class="option_element"  
+                        v-for="konek in params.konek" 
+                        :key="konek.code"  
+                        @click="optionsCodes.kon_code = konek.code,
+                        result.skate = konek.name,
+                        fullImage(konek.code, '/konek/'),
+                        CleanCounters()
+                        "
+                    >
+                        <img :src="`${imgPath + mainRoof}/konek/${optionsCodes.material_code}/${konek.code}.png`">
+                        <p class="title">{{konek.name}}</p>
+                    </div>   
+                </div>
+
+                <div class="options_section" v-if="currentStep == 4">
+                    <div class="option_element"  
+                        v-for="chimney in params.chimneys" 
+                        :key="chimney.code"  
+                        @click="optionsCodes.chimney_code = chimney.code,
+                        result.chimney = chimney.name,
+                        fullImage(`${optionsCodes.material_code}-${konPath + chimney.code}`, '/chimney/'),
+                        CleanCounters()
+                        "
+                    >
+                        <img :src="`${imgPath + mainRoof}/chimney/${optionsCodes.material_code}-${konPath + chimney.code}.png`">
+                        <p class="title">{{chimney.name}}</p>
+                    </div> 
+                    <p class="steps_info" style="margin: 40px 0 20px 0;">Материал кровельных надстроек. Варианты</p>  
+                    <div class="cr_mat">
+                        <div class="cr_element" 
+                            v-for="structure in params.superstructures" 
+                            :key="structure.name"  
+                            :title="structure.name"
+                            @click="result.superstructures = structure.name"
+                        >
+                            <img :src="structure.img">
+                            <span>{{structure.name}}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="options_section" v-if="currentStep == 5">
+                    <div class="option_element"  
+                        v-for="front in params.front" 
+                        :key="front.code"  
+                        @click="optionsCodes.front_code = front.code,
+                        fullImage(`${optionsCodes.material_code}-${konPath + optionsCodes.chimney_code}-${front.code}`, '/front/'),
+                        result.facade = front.name
+                        "
+                    >
+                        <img :src="`${imgPath + mainRoof}/front/${optionsCodes.material_code}-${konPath + optionsCodes.chimney_code}-${front.code}.png`">
+                        <p class="title">{{front.name}}</p>
+                    </div> 
+                </div>
+
+
+
+                <div class="options_section" v-if="currentStep == 6">
+                    <div class="zamery">
+                        <label>
+                            <span>Замер R1 (Длина конька,м)</span>
+                            <input type="number" name="zamer-1" value="measurements.skate_length"
+                            v-model.number="measurements.skate_length"
+                            >
+                        </label>
+                        <label>
+                            <span>Замер R2 (Высота дома,м)</span>
+                            <input type="number" name="zamer-2" value="measurements.house_height"
+                            v-model.number="measurements.house_height"
+                            >
+                        </label>
+                        <label class="skat" v-if="mainRoof != 'Sharovaya'">
+                            <span>Замер R3 (Длина ската,м)</span>
+                            <input type="number" name="zamer-3" value="measurements.slope_length"
+                            v-model.number="measurements.slope_length"
+                            >
+                        </label>
+                        <label>
+                            <span>{{num[0]}} Расстояние от конька до первого дымохода,м</span>
+                            <input type="number" name="zamer-4" value="measurements.first_chi_length"
+                            v-model.number="measurements.first_chi_length"
+                            >
+                        </label>
+                        <label class="hidden two_chi">
+                            <span>{{num[1]}} Расстояние от конька до второго дымохода,м</span>
+                            <input type="number" name="zamer-5" value="measurements.second_chi_length"
+                            v-model.number="measurements.second_chi_length"
+                            >
+                        </label>
+                        <label class="hidden three_chi">
+                            <span>{{num[2]}} Расстояние от конька до третего дымохода,м</span>
+                            <input type="number" name="zamer-6" value="measurements.third_chi_length"
+                            v-model.number="measurements.third_chi_length"
+                            >
+                        </label>
+                    </div>
+                    <p class="steps_info" style="margin: 40px 0 20px 0;">Тип грунта:</p>
+                    <div class="ground_wrapper">
+                        <label 
+                            v-for="grunt in params.grunt" 
+                            :key="grunt.name"
+                        >
+                            <input type="radio" name="ground" :value="grunt.name"
+                                v-model.number="result.priming"
+                            >
+                            {{grunt.name}}
+                        </label>
+                    </div>
+                </div>
+
+
+
+                <div class="options_section" v-if="currentStep == 7">
+                    <p class="steps_info" style="margin: 40px 0 20px 0;">Способ ввода электропроводки в здание:</p>
+                    <div class="ground_wrapper system">
+                        <label
+                            v-for="grounding in params.grounding" 
+                            :key="grounding.name"
+                        >
+                        <input type="radio" name="gs" :value="grounding.name"
+                            v-model.number="result.grounding_sustem"
+                        >
+                        {{grounding.name}}
+                    </label>
+                    </div>
+                    <p class="steps_info" style="margin: 40px 0 20px 0;">Количество проводов:</p>
+                    <div class="ground_wrapper wires">
+                        <label
+                            v-for="wires in params.wires" 
+                            :key="wires.name"
+                        >
+                            <input type="radio" name="wires" :value="wires.name"
+                                v-model.number="result.wires"
+                            >
+                        {{wires.name}}
+                        </label>
+                    </div>
+                </div>
+
+
+
+                <div class="options_section" v-if="currentStep == 8">
+                    {{resultTable()}}
+                    <div class="result_tabel">
+                        <div class="requisites">
+                            <p>ООО "ТерраЦинк"</p>
+                            <p>Юридический адрес: 223050, Минская область, Минский район, Колодищанский с/с, 175, район агрогородка Колодищи, кабинет 209. Почтовый адрес: 223050 Минская обл., Минский район, пос. Колодищи ул. Парковая 17.</p>
+                            <p>УНП 691788197</p>
+                            <p><strong>Банк получатель: </strong></p>
+                            <p>Приорбанк ОАО ЦБУ 117 220141, г. Минск, пр. Независимости, 172 (PRIORBANK, MINSK, REPUBLIC OF BELARUS)</p>
+                            <p>Р/с бел.руб: BY64PJCB30120599061000000933</p>
+                            <p>BIC SWIFT: PJCBBY2X</p>
+                        </div>
+                        <p class="bold">Товарный чек</p>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <td>№</td>
+                                    <td class="name">Наименование <br> товара</td>
+                                    <td class="ed">ед. <br> изм.</td>
+                                    <td class="count">Коли-<br>чество</td>
+                                    <td class="count">Цена с НДС, <br>BYN</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                
+                            </tbody>
+                        </table>
+                        <p>Материал кровельных надстроек: <strong>{{result.superstructures}}</strong></p>  
+                        <p>Способ ввода электропроводки в здание: <strong>{{result.grounding_sustem}}</strong></p> 
+                    </div>
+                </div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                <div class="full_img_section" :class="{masked: isMasked}">
                     <img v-if="mainRoof != '' " :src="fullImgPath">
                 </div>
                 <div class="calc_bottom_bar">
-
-                    <div class="btn prev_btn" v-if="currentStep > 1" @click="Step()">Шаг 
-                        <span class="prev_step">{{currentStep - 1}}</span> : 
-                        <span class="prev_cat"><!-- {{steps[step_currentStep - 1_name]}} --></span> 
+                    <div class="btn prev_btn" v-if="currentStep > 1" @click="Step('Prev')">Шаг 
+                        <span class="prev_step">{{currentStep - counterMinus}}</span> : 
+                        <span class="prev_cat">{{steps['step_' + (currentStep - counterMinus) + '_name']}}</span> 
                     </div>
 
-                    <div class="btn next_btn" @click="NextStep()">Шаг 
-                        <span class="next_step">{{currentStep + 1}}</span> : 
-                        <span class="next_cat">{{steps.step_1_name}}</span>
+                    <div class="btn next_btn" v-if="currentStep < 8" @click="Step('Next')">Шаг 
+                        <span class="next_step">{{currentStep + counterPlus}}</span> : 
+                        <span class="next_cat">{{steps['step_' + (currentStep + counterPlus) + '_name']}}</span>
                     </div>
 
                 </div>

@@ -62,5 +62,69 @@
       "name": "Негорючий",
       "code": "ngor"
     }
+  },
+  "superstructures":{
+    "structure-1":{
+      "name": "Кирпичи",
+      "img": "https://terrazn-dom.by/wp-content/themes/blankslate/calc/img/cr_mat-1.jpg"
+    },
+    "structure-2":{
+      "name": "Асбест (труба)",
+      "img": "https://terrazn-dom.by/wp-content/themes/blankslate/calc/img/cr_mat-2.jpg"
+    },
+    "structure-3":{
+      "name": "Кирпич, обшитый металлопрофилем",
+      "img": "https://terrazn-dom.by/wp-content/themes/blankslate/calc/img/cr_mat-3.jpg"
+    },
+    "structure-4":{
+      "name": "Металлопрофиль (жесть)",
+      "img": "https://terrazn-dom.by/wp-content/themes/blankslate/calc/img/cr_mat-4.jpg"
+    },
+    "structure-5":{
+      "name": "Труба металлическая",
+      "img": "https://terrazn-dom.by/wp-content/themes/blankslate/calc/img/cr_mat-5.jpg"
+    }
+  },
+  "grunt":{
+    "grunt-1":{
+      "name": "Глина"
+    },
+    "grunt-2":{
+      "name": "Суглинок"
+    },
+    "grunt-3":{
+      "name": "Песок"
+    },
+    "grunt-4":{
+      "name": "Чернозем"
+    }
+  },
+  "grounding":{
+    "grounding-1":{
+      "name": "Воздушный"
+    },
+    "grounding-2":{
+      "name": "Подземный"
+    },
+    "grounding-3":{
+      "name": "Не знаю"
+    }
+  },
+  "wires": {
+    "wires-1":{
+      "name": "2"
+    },
+    "wires-2":{
+      "name": "3"
+    },
+    "wires-3":{
+      "name": "4"
+    },
+    "wires-4":{
+      "name": "5"
+    },
+    "wires-5":{
+      "name": "Не знаю"
+    }
   }
 }

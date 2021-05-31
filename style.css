@@ -2230,7 +2230,7 @@ img.showcase {
 
 .result_tabel {
     width: 100%;
-    display: none;
+    display: flex;
     justify-content: center;
     margin: 50px 0 100px;
     flex-direction: column;
