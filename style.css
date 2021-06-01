@@ -2096,27 +2096,53 @@ img.showcase {
     display: flex;
     align-items: flex-start;
     justify-content: center;
+    flex-direction: column;
     height: fit-content;
     padding-left: 80px;
     margin-top: 10px;
     position: relative;
 }
-
-.full_img_section.masked:before {
+.full_img_section.masked .img_box{
+    position: relative;
+}
+.full_img_section.masked .img_box:before {
     content: "";
     position: absolute;
-    left: 80px;
-    top: 0;
+    left: 2px;
+    top: 2px;
     display: block;
-    right: 0;
-    bottom: 0;
+    right: 2px;
+    bottom: 4px;
+    border-radius: 10px;
 }
 
 .full_img_section img {
     border: 2px solid #eae8e9;
     border-radius: 10px;
 }
-
+.steps_breadcrumbs{
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 40px;
+}
+.steps_breadcrumb{
+    display: flex;
+    padding: 10px 0;
+    font-weight: bold;
+    color: #8c27a1;
+    font-size: 18px;
+}
+.steps_breadcrumb span{
+    margin-right: 5px;
+}
+.steps_breadcrumb::after{
+    content: ">";
+    display: block;
+    padding: 0 5px;
+}
+.steps_breadcrumbs .steps_breadcrumb:last-child:after{
+    display: none;
+}
 .calc_wrapper .calc_bottom_bar {
     width: 100%;
     display: flex;
@@ -2271,6 +2297,7 @@ img.showcase {
     padding: 5px ;
     text-align: center;
     font-size: 18px;
+    vertical-align: middle;
 }
 
 .result_tabel .price, .result_tabel .total {
@@ -2327,7 +2354,7 @@ img.showcase {
     }
 }
 
-@media screen and (max-width: 900px) {
+@media screen and (max-width: 1024px) {
     .calc_top_bar {
         order: 1;
     }

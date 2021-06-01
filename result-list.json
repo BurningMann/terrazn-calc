@@ -122,108 +122,128 @@
         "product_1":{
           "name":"Комплект заземления 21300",
           "price":65.52,
-          "count":2
+          "count":2,
+          "unit": "шт"
         },
         "product_2":{
           "name":"Колодец контрольно измерительный",
           "price":45.6,
-          "count":2
+          "count":2,
+          "unit": "шт"
         },
         "product_3":{
           "name":"Полоса оцинк 25х4",
           "price":6,
-          "count":4
+          "count":4,
+          "unit": "кг"
         },
         "product_4":{
           "name":"Зажим контрольный 55114",
           "price":3.28,
-          "count":2
+          "count":2,
+          "unit": "шт"
         },
         "product_5":{
           "name":"Держатель фасадный для полосы 31512",
           "price":3.43,
-          "count":2
+          "count":2,
+          "unit": "шт"
         }
       },
       "Суглинок": {
         "product_1":{
           "name":"Комплект заземления 21450",
           "price":88.92,
-          "count":2
+          "count":2,
+          "unit": "шт"
         },
         "product_2":{
           "name":"Колодец контрольно измерительный",
           "price":45.6,
-          "count":2
+          "count":2,
+          "unit": "шт"
         },
         "product_3":{
           "name":"Полоса оцинк 25х4",
           "price":6,
-          "count":4
+          "count":4,
+          "unit": "кг"
         },
         "product_4":{
           "name":"Зажим контрольный 55114",
           "price":3.28,
-          "count":2
+          "count":2,
+          "unit": "шт"
         },
         "product_5":{
           "name":"Держатель фасадный для полосы 31512",
           "price":3.43,
-          "count":2
+          "count":2,
+          "unit": "шт"
         }
       },
       "Песок": {
         "product_1":{
           "name":"Комплект заземления 21600",
           "price":117.0,
-          "count":2
+          "count":2,
+          "unit": "шт"
         },
         "product_2":{
           "name":"Колодец контрольно измерительный",
           "price":45.6,
-          "count":2
+          "count":2,
+          "unit": "шт"
         },
         "product_3":{
           "name":"Полоса оцинк 25х4",
           "price":6,
-          "count":4
+          "count":4,
+          "unit": "кг"
         },
         "product_4":{
           "name":"Зажим контрольный 55114",
           "price":3.28,
-          "count":2
+          "count":2,
+          "unit": "шт"
         },
         "product_5":{
           "name":"Держатель фасадный для полосы 31512",
           "price":3.43,
-          "count":2
+          "count":2,
+          "unit": "шт"
         }
       },
       "Чернозем": {
         "product_1":{
           "name":"Комплект заземления 21450",
           "price":88.92,
-          "count":2
+          "count":2,
+          "unit": ""
         },
         "product_2":{
           "name":"Колодец контрольно измерительный",
           "price":45.6,
-          "count":2
+          "count":2,
+          "unit": ""
         },
         "product_3":{
           "name":"Полоса оцинк 25х4",
           "price":6,
-          "count":4
+          "count":4,
+          "unit": "кг"
         },
         "product_4":{
           "name":"Зажим контрольный 55114",
           "price":3.28,
-          "count":2
+          "count":2,
+          "unit": ""
         },
         "product_5":{
           "name":"Держатель фасадный для полосы 31512",
           "price":3.43,
-          "count":2
+          "count":2,
+          "unit": ""
         }
       }
     },

@@ -193,9 +193,9 @@
 
 
 
-                <div class="options_section" v-if="currentStep == 8">
-                    {{resultTable()}}
-                    <div class="result_tabel">
+                <div class="options_section"  id="result_table" v-if="currentStep == 8">
+                    
+                    <div class="result_tabel" >
                         <div class="requisites">
                             <p>ООО "ТерраЦинк"</p>
                             <p>Юридический адрес: 223050, Минская область, Минский район, Колодищанский с/с, 175, район агрогородка Колодищи, кабинет 209. Почтовый адрес: 223050 Минская обл., Минский район, пос. Колодищи ул. Парковая 17.</p>
@@ -206,7 +206,7 @@
                             <p>BIC SWIFT: PJCBBY2X</p>
                         </div>
                         <p class="bold">Товарный чек</p>
-                        <table>
+                        <table >
                             <thead>
                                 <tr>
                                     <td>№</td>
@@ -216,12 +216,72 @@
                                     <td class="count">Цена с НДС, <br>BYN</td>
                                 </tr>
                             </thead>
+                            
                             <tbody>
-                                
+                                {{resultTable()}}
+                                <tr>
+                                    <td class="pos"></td>
+                                    <td class="name">{{resultList.holder[result.material].name}}</td>
+                                    <td class="ed">шт</td>
+                                    <td class="count">{{holder_count}}</td>
+                                    <td class="price">{{Math.round(resultList.holder[result.material].price * holder_count)}}</td>
+                                </tr>
+
+                                <tr v-if="result.skate != ''">
+                                    <td class="pos"></td>
+                                    <td class="name">{{resultList.skate_holder[result.skate].name}}</td>
+                                    <td class="ed">шт</td>
+                                    <td class="count">{{measurements.skate_length}}</td>
+                                    <td class="price">{{measurements.skate_length * resultList.skate_holder[result.skate].price}}</td>
+                                </tr>
+                                <tr v-for="obj in resultList.chimney[result.chimney]">
+                                    <td class="pos"></td>
+                                    <td class="name">{{obj.name}}</td>
+                                    <td class="ed">шт</td>
+                                    <td class="count">{{obj.count}}</td>
+                                    <td class="price">{{obj.price}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="pos"></td>
+                                    <td class="name">{{resultList.facade_holder[result.facade].name}}</td>
+                                    <td class="ed">шт</td>
+                                    <td class="count">{{facade_holder}}</td>
+                                    <td class="price">{{Math.round(resultList.facade_holder[result.facade].price * facade_holder)}}</td>
+                                </tr>
+
+                                <tr v-for="obj in resultList.priming_elements[result.priming]">
+                                    <td class="pos"></td>
+                                    <td class="name">{{obj.name}}</td>
+                                    <td class="ed">{{obj.unit}}</td>
+                                    <td class="count">{{obj.count}}</td>
+                                    <td class="price">{{obj.price}}</td>
+                                </tr>
+
+                                <tr v-if="result.wires != 'Не знаю'">
+                                    <td class="pos"></td>
+                                    <td class="name">{{resultList.wires[result.wires].name}}</td>
+                                    <td class="ed">шт</td>
+                                    <td class="count">1</td>
+                                    <td class="price">{{resultList.wires[result.wires].price}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td class="pos"></td>
+                                    <td class="name">Проволока ф8 оцинкованная</td>
+                                    <td class="ed">кг</td>
+                                    <td class="count">{{wire_length}}</td>
+                                    <td class="price">{{wire_length * 5.05}}</td>
+                                </tr>
+
+                                <tr>
+                                    <td colspan="4" style="text-align: left;font-weight: bold;">Сумма</td>
+                                    <td class="sum" style="text-align: right;font-weight: bold;">{{control_sum}}</td>
+                                </tr>
                             </tbody>
                         </table>
                         <p>Материал кровельных надстроек: <strong>{{result.superstructures}}</strong></p>  
                         <p>Способ ввода электропроводки в здание: <strong>{{result.grounding_sustem}}</strong></p> 
+                        <p v-if="result.wires == 'Не знаю'">Количество проводов: <strong></strong>${result.wires}</strong></p>
                     </div>
                 </div>
 
@@ -241,7 +301,27 @@
 
 
                 <div class="full_img_section" :class="{masked: isMasked}">
-                    <img v-if="mainRoof != '' " :src="fullImgPath">
+                    <div class="img_box">
+                        <img v-if="mainRoof != '' " :src="fullImgPath">
+                    </div>
+                    
+
+                    <div class="steps_breadcrumbs">
+                        <div class="steps_breadcrumb" v-if="result.shape != '' && currentStep >= 2">{{result.shape}} крыша</div>
+                        <div class="steps_breadcrumb" v-if="result.material != '' && currentStep >= 3">{{result.material}}</div>
+                        <div class="steps_breadcrumb" v-if="result.skate != '' && currentStep >= 4">{{result.skate}} конёк</div>
+                        <div class="steps_breadcrumb" v-if="result.chimney != '' && currentStep >= 5">{{result.chimney}}</div>
+                        <div class="steps_breadcrumb" v-if="result.facade != '' && currentStep >= 6">{{result.facade}} фасад</div>
+
+                        <div class="steps_breadcrumb" v-if="currentStep >= 7">
+                            <span v-if="measurements.skate_length !=0 ">{{measurements.skate_length}} м R1, </span>
+                            <span v-if="measurements.house_height !=0 ">{{measurements.house_height}} м R2, </span>
+                            <span v-if="measurements.slope_length !=0 ">{{measurements.slope_length}} м R3, </span>
+                            <span v-if="measurements.first_chi_length !=0 ">{{measurements.first_chi_length}} м {{num[0]}}, </span>
+                            <span v-if="measurements.second_chi_length !=0 ">{{measurements.second_chi_length}} м {{num[1]}}, </span>
+                            <span v-if="measurements.third_chi_length !=0 ">{{measurements.third_chi_length}} м {{num[2]}}</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="calc_bottom_bar">
                     <div class="btn prev_btn" v-if="currentStep > 1" @click="Step('Prev')">Шаг 
@@ -254,9 +334,15 @@
                         <span class="next_cat">{{steps['step_' + (currentStep + counterPlus) + '_name']}}</span>
                     </div>
 
+                    <div class="btn pdf_btn">
+                        Скачать PDF
+                    </div>
                 </div>
             </div>
         </main> 
+        <script src="html2canvas.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+        <script src="js-autotable.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script> 
         <script src="jq.js"></script>
