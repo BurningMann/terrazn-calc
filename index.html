@@ -8,6 +8,13 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div class="preloader">
+        <div class="loading">
+            <p>Загрузка</p>
+            <span></span>
+        </div>
+    </div>
+
     <main id="content" class="calc-content">
         <div class="row">
         <h1 class="h1_title">Калькулятор расчета</h1>
@@ -46,7 +53,7 @@
                         CleanCounters()
                         "
                     >
-                        <img :src="`${imgPath + mainRoof}/material/${material.code}.png`">
+                        <img v-lazy="`${imgPath + mainRoof}/material/${material.code}.png`">
                         <p class="title">{{material.name}}</p>
                     </div>   
                 </div>
@@ -61,7 +68,7 @@
                         CleanCounters()
                         "
                     >
-                        <img :src="`${imgPath + mainRoof}/konek/${optionsCodes.material_code}/${konek.code}.png`">
+                        <img v-lazy="`${imgPath + mainRoof}/konek/${optionsCodes.material_code}/${konek.code}.png`">
                         <p class="title">{{konek.name}}</p>
                     </div>   
                 </div>
@@ -76,7 +83,7 @@
                         CleanCounters()
                         "
                     >
-                        <img :src="`${imgPath + mainRoof}/chimney/${optionsCodes.material_code}-${konPath + chimney.code}.png`">
+                        <img v-lazy="`${imgPath + mainRoof}/chimney/${optionsCodes.material_code}-${konPath + chimney.code}.png`">
                         <p class="title">{{chimney.name}}</p>
                     </div> 
                     <p class="steps_info" style="margin: 40px 0 20px 0;">Материал кровельных надстроек. Варианты</p>  
@@ -87,7 +94,7 @@
                             :title="structure.name"
                             @click="result.superstructures = structure.name"
                         >
-                            <img :src="structure.img">
+                            <img v-lazy="structure.img">
                             <span>{{structure.name}}</span>
                         </div>
                     </div>
@@ -102,7 +109,7 @@
                         result.facade = front.name
                         "
                     >
-                        <img :src="`${imgPath + mainRoof}/front/${optionsCodes.material_code}-${konPath + optionsCodes.chimney_code}-${front.code}.png`">
+                        <img v-lazy="`${imgPath + mainRoof}/front/${optionsCodes.material_code}-${konPath + optionsCodes.chimney_code}-${front.code}.png`">
                         <p class="title">{{front.name}}</p>
                     </div> 
                 </div>
@@ -193,10 +200,10 @@
 
 
 
-                <div class="options_section"  id="result_table" v-if="currentStep == 8">
+                <div class="options_section" v-if="currentStep == 8">
                     
                     <div class="result_tabel" >
-                        <div class="requisites">
+                        <div class="requisites" id="requisites">
                             <p>ООО "ТерраЦинк"</p>
                             <p>Юридический адрес: 223050, Минская область, Минский район, Колодищанский с/с, 175, район агрогородка Колодищи, кабинет 209. Почтовый адрес: 223050 Минская обл., Минский район, пос. Колодищи ул. Парковая 17.</p>
                             <p>УНП 691788197</p>
@@ -206,7 +213,7 @@
                             <p>BIC SWIFT: PJCBBY2X</p>
                         </div>
                         <p class="bold">Товарный чек</p>
-                        <table >
+                        <table id="result_table">
                             <thead>
                                 <tr>
                                     <td>№</td>
@@ -219,7 +226,7 @@
                             
                             <tbody>
                                 {{resultTable()}}
-                                <tr>
+                                <tr class="resLine">
                                     <td class="pos"></td>
                                     <td class="name">{{resultList.holder[result.material].name}}</td>
                                     <td class="ed">шт</td>
@@ -227,21 +234,21 @@
                                     <td class="price">{{Math.round(resultList.holder[result.material].price * holder_count)}}</td>
                                 </tr>
 
-                                <tr v-if="result.skate != ''">
+                                <tr class="resLine" v-if="result.skate != ''">
                                     <td class="pos"></td>
                                     <td class="name">{{resultList.skate_holder[result.skate].name}}</td>
                                     <td class="ed">шт</td>
                                     <td class="count">{{measurements.skate_length}}</td>
                                     <td class="price">{{measurements.skate_length * resultList.skate_holder[result.skate].price}}</td>
                                 </tr>
-                                <tr v-for="obj in resultList.chimney[result.chimney]">
+                                <tr class="resLine" v-for="obj in resultList.chimney[result.chimney]">
                                     <td class="pos"></td>
                                     <td class="name">{{obj.name}}</td>
                                     <td class="ed">шт</td>
                                     <td class="count">{{obj.count}}</td>
                                     <td class="price">{{obj.price}}</td>
                                 </tr>
-                                <tr>
+                                <tr class="resLine">
                                     <td class="pos"></td>
                                     <td class="name">{{resultList.facade_holder[result.facade].name}}</td>
                                     <td class="ed">шт</td>
@@ -249,7 +256,7 @@
                                     <td class="price">{{Math.round(resultList.facade_holder[result.facade].price * facade_holder)}}</td>
                                 </tr>
 
-                                <tr v-for="obj in resultList.priming_elements[result.priming]">
+                                <tr class="resLine" v-for="obj in resultList.priming_elements[result.priming]">
                                     <td class="pos"></td>
                                     <td class="name">{{obj.name}}</td>
                                     <td class="ed">{{obj.unit}}</td>
@@ -257,7 +264,7 @@
                                     <td class="price">{{obj.price}}</td>
                                 </tr>
 
-                                <tr v-if="result.wires != 'Не знаю'">
+                                <tr class="resLine" v-if="result.wires != 'Не знаю'">
                                     <td class="pos"></td>
                                     <td class="name">{{resultList.wires[result.wires].name}}</td>
                                     <td class="ed">шт</td>
@@ -265,23 +272,23 @@
                                     <td class="price">{{resultList.wires[result.wires].price}}</td>
                                 </tr>
 
-                                <tr>
+                                <tr class="resLine">
                                     <td class="pos"></td>
                                     <td class="name">Проволока ф8 оцинкованная</td>
                                     <td class="ed">кг</td>
                                     <td class="count">{{wire_length}}</td>
-                                    <td class="price">{{wire_length * 5.05}}</td>
+                                    <td class="price">{{Math.ceil(wire_length * 5.05)}}</td>
                                 </tr>
 
-                                <tr>
+                                <tr class="resSum">
                                     <td colspan="4" style="text-align: left;font-weight: bold;">Сумма</td>
                                     <td class="sum" style="text-align: right;font-weight: bold;">{{control_sum}}</td>
                                 </tr>
                             </tbody>
                         </table>
-                        <p>Материал кровельных надстроек: <strong>{{result.superstructures}}</strong></p>  
-                        <p>Способ ввода электропроводки в здание: <strong>{{result.grounding_sustem}}</strong></p> 
-                        <p v-if="result.wires == 'Не знаю'">Количество проводов: <strong></strong>${result.wires}</strong></p>
+                        <p class="mat_structure">Материал кровельных надстроек: <strong>{{result.superstructures}}</strong></p>  
+                        <p class="electro">Способ ввода электропроводки в здание: <strong>{{result.grounding_sustem}}</strong></p> 
+                        <p class="wires_count" v-if="result.wires == 'Не знаю'">Количество проводов: <strong></strong>{{result.wires}}</strong></p>
                     </div>
                 </div>
 
@@ -334,16 +341,18 @@
                         <span class="next_cat">{{steps['step_' + (currentStep + counterPlus) + '_name']}}</span>
                     </div>
 
-                    <div class="btn pdf_btn">
+                    <div class="btn pdf_btn" v-if="currentStep == 8" @click="savePdf()">
                         Скачать PDF
                     </div>
                 </div>
             </div>
         </main> 
         <script src="html2canvas.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
-        <script src="js-autotable.js"></script>
+        <script src="pdfmake.min.js"></script>
+        <script src="vfs_fonts.js"></script>
+        <script src="fonts/Roboto.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        <script src="https://unpkg.com/vue-lazyload/vue-lazyload.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12"></script> 
         <script src="jq.js"></script>
         <script src="scripts.js"></script>

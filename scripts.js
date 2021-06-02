@@ -1,3 +1,11 @@
+window.onload = function(){
+	$(".preloader").fadeOut()
+}
+Vue.use(VueLazyload, {
+	preLoad: 2,
+	loading: 'loading-spin.svg',
+	attempt: 1
+})
 var vm = new Vue({
 	el: '#app',
 	data: () => ({
@@ -70,15 +78,18 @@ var vm = new Vue({
 
 		Step(step){
 			$(".step_circle").removeClass("active")
+			
 			for(let i = 0; i < this.currentStep+1; i++){
 				$($(".step_circle")[i]).addClass("active")
 			}
+
 			if(this.mainRoof == "Sharovaya"){
 				this.num = ["R3","R4","R5"]
 				$(".skat").css("display","none")
 			}else{
 				this.num = ["R4","R5","R6"]
 			}
+
 			if(step == 'Next'){
 				if (this.currentStep == 1 && this.result.shape == "") {
 					alert(this.stepChoose[this.currentStep-1])
@@ -170,6 +181,60 @@ var vm = new Vue({
 				$($(".pos")[index]).text(pos += 1)
 			})
 			this.control_sum = sum
+		},
+
+		savePdf(){
+			let getTableData = function(){
+				var resultTablemas = [['№','Наименование товара','ед. изм.','Количество', 'Цена с НДС, BYN']]
+				$("#result_table .resLine").map(function(index,element){
+					let tableString = []
+					$(element).find("td").map(function(index,text){
+						tableString.push($(text).text())
+					})
+					resultTablemas.push(tableString)
+				})
+				resultTablemas.push([{text:'Сумма',bold:true,colSpan:4},{},{},{},{text:$("#result_table .sum").text(),bold:true}])
+
+				return resultTablemas
+			}
+			var docInfo = {
+		 
+				info: {
+					title:'Товарный чек',
+					author:'TERRAZN',
+				},
+				
+				pageSize:'A4',
+				pageOrientation:'portrait',
+				pageMargins:[20,50,20,60],
+				
+				content: [
+					{text:'ООО "ТерраЦинк"',margin:[0,3,0,3]},
+					{text:'Юридический адрес: 223050, Минская область, Минский район, Колодищанский с/с, 175, район агрогородка Колодищи, кабинет 209. Почтовый адрес: 223050 Минская обл., Минский район, пос. Колодищи ул. Парковая 17',margin:[0,3,0,3]},
+					{text:'УНП 691788197',margin:[0,3,0,3]},
+					{text:'Банк получатель:',bold:true,margin:[0,3,0,3]},
+					{text:'Приорбанк ОАО ЦБУ 117 220141, г. Минск, пр. Независимости, 172 (PRIORBANK, MINSK, REPUBLIC OF BELARUS)',margin:[0,3,0,3]},
+					{text:'Р/с бел.руб: BY64PJCB30120599061000000933',margin:[0,3,0,3]},
+					{text:'BIC SWIFT: PJCBBY2X',margin:[0,3,0,3]},	
+					{
+						text:'Товарный чек',
+						fontSize:20,
+						margin:[0,20,0,20],
+						alignment:'center'
+					},
+					{
+						table:{
+							widths:['auto','auto','auto','auto','auto'],
+							body:getTableData(),
+							headerRows:1
+						}
+					},
+					{text:$(".mat_structure").text(),margin:[0,20,0,3]},
+					{text:$(".electro").text(),margin:[0,3,0,3]},
+					{text:$(".wires_count").text(),margin:[0,3,0,0]},
+				]
+			}
+			pdfMake.createPdf(docInfo).download('price.pdf');
 		}
 	},
 
@@ -190,8 +255,7 @@ var vm = new Vue({
 		
 		if(this.mainRoof == "Odnokatnaya" && this.currentStep == 4 || this.mainRoof == "Odnokatnaya" && this.currentStep == 5){
 			this.konPath = ""
-		}
-		else{
+		}else{
 			this.konPath = this.optionsCodes.kon_code + '-'
 		}
 
@@ -203,13 +267,12 @@ var vm = new Vue({
 			}
 			$(".mask_style").remove()
 			$(".full_img_section").append(`
-			<style class="mask_style">
-				.full_img_section.masked .img_box:before{
-					background: url(${this.konPath}) center/contain no-repeat;
-				}
-			</style>
-			
-		`)
+				<style class="mask_style">
+					.full_img_section.masked .img_box:before{
+						background: url(${this.konPath}) center/contain no-repeat;
+					}
+				</style>
+			`)
 			this.isMasked = true
 
 			if(this.optionsCodes.chimney_code == "two"){
@@ -221,6 +284,7 @@ var vm = new Vue({
 				$(".two_chi").css("display","block")
 				$(".three_chi").css("display","block")
 			}
+
 		}else{
 			$(".mask_style").remove()
 			this.isMasked = false
@@ -232,42 +296,5 @@ $( ".options_section").on( "click", ".cr_element", function() {
 	$(".cr_element.active").removeClass("active")
 	$(this).addClass("active")
 });
-const { jsPDF } = window.jspdf;
-window.html2canvas = html2canvas;
-
-$(".pdf_btn").click(function(){
-/* 	html2canvas(document.querySelector("#app")).then(canvas => {
-		document.body.appendChild(canvas)
-	}) */
-	function exportPdf() {
-		content = $("#result_table")
-	
-		var useWidth = content.prop('scrollWidth');
-		var useHeight = content.prop('scrollHeight');
-	
-		html2canvas((document.querySelector("#app")),{ width: 670, height: 1000}).then(canvas => {
-			var img = canvas.toDataURL("image/png");
-			var doc = new jsPDF({
-				unit:'px', 
-				format:'a4'
-			});
-	
-			doc.addImage(img, 'JPEG', 0, 0);
-			doc.save('test.pdf');
-		})
-/* 		html2canvas((content), { width: useWidth, height: useHeight}).then(function (canvas) {
-			debugger;
-			var img = canvas.toDataURL("image/png");
-			var doc = new jsPDF({
-				unit:'px', 
-				format:'a4'
-			});
-	
-			doc.addImage(img, 'JPEG', 0, 0);
-			doc.save('test.pdf');
-		}); */
-	}
-	exportPdf()
-})
 
 

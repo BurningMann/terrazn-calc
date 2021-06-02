@@ -15,7 +15,14 @@ BlankSlate is distributed under the terms of the GNU GPL
 */
 /**FONTS**/
 
-
+@font-face {
+    font-family: "Roboto";
+    font-style: normal;
+    font-weight: 400;
+    /* Браузер сначала попробует найти шрифт локально */
+    src: local("Roboto"),
+         url("/fonts/Roboto-Regular.ttf") format("ttf"),
+  }
 /**FONTS END**/
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td,article,aside,canvas,details,embed,figure,figcaption,footer,header,hgroup,menu,nav,output,ruby,section,summary,time,mark,audio,video {
     margin: 0;
@@ -1997,6 +2004,127 @@ img.showcase {
 }
 
 /* CALC */
+.preloader{
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #171f30;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 5000;
+}
+.preloader .loading {
+    width: 80px;
+    height: 50px;
+    position: relative;
+  }
+  .preloader .loading p {
+    top: 0;
+    padding: 0;
+    margin: 0;
+    color: #5389a6;
+    font-family: "Oxygen", sans-serif;
+    animation: text 3.5s ease both infinite;
+    font-size: 12px;
+    letter-spacing: 1px;
+  }
+  @keyframes text {
+    0% {
+      letter-spacing: 1px;
+      transform: translateX(0px);
+    }
+    40% {
+      letter-spacing: 2px;
+      transform: translateX(26px);
+    }
+    80% {
+      letter-spacing: 1px;
+      transform: translateX(32px);
+    }
+    90% {
+      letter-spacing: 2px;
+      transform: translateX(0px);
+    }
+    100% {
+      letter-spacing: 1px;
+      transform: translateX(0px);
+    }
+  }
+  .preloader .loading span {
+    background-color: #5389a6;
+    border-radius: 50px;
+    display: block;
+    height: 16px;
+    width: 16px;
+    bottom: 0;
+    position: absolute;
+    transform: translateX(64px);
+    animation: loading 3.5s ease both infinite;
+  }
+  .preloader .loading span:before {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 100%;
+    background-color: #a6dcee;
+    border-radius: inherit;
+    animation: loading2 3.5s ease both infinite;
+  }
+  @keyframes loading {
+    0% {
+      width: 16px;
+      transform: translateX(0px);
+    }
+    40% {
+      width: 100%;
+      transform: translateX(0px);
+    }
+    80% {
+      width: 16px;
+      transform: translateX(64px);
+    }
+    90% {
+      width: 100%;
+      transform: translateX(0px);
+    }
+    100% {
+      width: 16px;
+      transform: translateX(0px);
+    }
+  }
+  @keyframes loading2 {
+    0% {
+      transform: translateX(0px);
+      width: 16px;
+    }
+    40% {
+      transform: translateX(0%);
+      width: 80%;
+    }
+    80% {
+      width: 100%;
+      transform: translateX(0px);
+    }
+    90% {
+      width: 80%;
+      transform: translateX(15px);
+    }
+    100% {
+      transform: translateX(0px);
+      width: 16px;
+    }
+  }
+  @keyframes fadeIn {
+      from{
+          opacity: 0;
+      }
+      to{
+          opacity: 1;
+      }
+  }
 .calc_wrapper img {
     max-width: 100%;
 }
@@ -2089,8 +2217,16 @@ img.showcase {
 .option_element img {
     height: auto;
     margin: auto;
-}
 
+}
+.option_element img[lazy="loaded"]{
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-name: fadeIn;
+    animation-name: fadeIn;
+}
 .full_img_section {
     width: 45%;
     display: flex;
@@ -2177,12 +2313,10 @@ img.showcase {
     border: 2px solid #8c27a1;
 }
 
-.calc_bottom_bar .next_btn {
-    margin-right: 20px;
+.calc_bottom_bar .next_btn,.calc_bottom_bar .pdf_btn {
     background: #8c27a1;
     color: #ffffff;
 }
-
 .cr_mat {
     width: 100%;
     display: flex;

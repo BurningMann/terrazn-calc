@@ -33,3 +33,23 @@ html2canvas((content), { width: useWidth, height: useHeight}).then(function (can
     doc.addImage(img, 'JPEG', 0, 0);
     doc.save('test.pdf');
 });
+/* const { jsPDF } = window.jspdf; */
+/* 	function exportPdf() {
+		let content = $("#result_table")
+
+		html2canvas((document.querySelector("#result_table")),{width:770,height: 1500}).then(canvas => {
+			var img = canvas.toDataURL("image/png");
+			var doc = new jsPDF({
+				unit:'px', 
+				format:'a4'
+			});
+			doc.addImage(img, 'JPEG', 10, -300,);
+			doc.save('test.pdf');
+		})
+		
+	}
+	exportPdf() */
+/* aliaksandervasilets@gmail.com */
+
+['№','Наименование товара','ед. изм.','Количество', 'Цена с НДС, BYN'],
+[{text:'текстовое содержимое',bold:true},'Вторая','Третья','Четвертая','q']
