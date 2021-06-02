@@ -37,7 +37,13 @@
                 </div>
         
                 <div class="options_section" v-if="currentStep == 1">
-                    <div class="option_element"  v-for="roof in roofs" :key="roof.code" :data-roof="roof.pathName" @click="mainRoof = roof.pathName,result.shape = roof.name,fullImage(roof.code, '/'),CleanCounters()">
+                    <div class="option_element"  
+                        v-for="roof in roofs" 
+                        :key="roof.code" 
+                        :class="{ active: result.shape == roof.name }" 
+                        :data-roof="roof.pathName" 
+                        @click="mainRoof = roof.pathName,result.shape = roof.name,fullImage(roof.code, '/'),CleanCounters()"
+                    >
                         <img :src="`${imgPath + roof.pathName}/${roof.code}.png`">
                         <p class="title">{{roof.name}}</p>
                     </div>         
@@ -47,6 +53,7 @@
                     <div class="option_element"  
                         v-for="material in params.materials" 
                         :key="material.code"  
+                        :class="{ active: result.material == material.name }" 
                         @click="optionsCodes.material_code = material.code,
                         result.material = material.name,
                         fullImage(material.code, '/material/'),
@@ -61,7 +68,8 @@
                 <div class="options_section" v-if="currentStep == 3">
                     <div class="option_element"  
                         v-for="konek in params.konek" 
-                        :key="konek.code"  
+                        :key="konek.code" 
+                        :class="{ active: result.skate == konek.name }"  
                         @click="optionsCodes.kon_code = konek.code,
                         result.skate = konek.name,
                         fullImage(konek.code, '/konek/'),
@@ -77,6 +85,7 @@
                     <div class="option_element"  
                         v-for="chimney in params.chimneys" 
                         :key="chimney.code"  
+                        :class="{ active: result.chimney == chimney.name }"
                         @click="optionsCodes.chimney_code = chimney.code,
                         result.chimney = chimney.name,
                         fullImage(`${optionsCodes.material_code}-${konPath + chimney.code}`, '/chimney/'),
@@ -91,6 +100,7 @@
                         <div class="cr_element" 
                             v-for="structure in params.superstructures" 
                             :key="structure.name"  
+                            :class="{ active: result.superstructures == structure.name }"
                             :title="structure.name"
                             @click="result.superstructures = structure.name"
                         >
@@ -103,18 +113,17 @@
                 <div class="options_section" v-if="currentStep == 5">
                     <div class="option_element"  
                         v-for="front in params.front" 
-                        :key="front.code"  
+                        :key="front.code" 
+                        :class="{ active: result.facade == front.name }" 
                         @click="optionsCodes.front_code = front.code,
-                        fullImage(`${optionsCodes.material_code}-${konPath + optionsCodes.chimney_code}-${front.code}`, '/front/'),
-                        result.facade = front.name
+                        result.facade = front.name,
+                        fullImage(`${optionsCodes.material_code}-${konPath + optionsCodes.chimney_code}-${front.code}`, '/front/')
                         "
                     >
                         <img v-lazy="`${imgPath + mainRoof}/front/${optionsCodes.material_code}-${konPath + optionsCodes.chimney_code}-${front.code}.png`">
                         <p class="title">{{front.name}}</p>
                     </div> 
                 </div>
-
-
 
                 <div class="options_section" v-if="currentStep == 6">
                     <div class="zamery">
@@ -169,8 +178,6 @@
                     </div>
                 </div>
 
-
-
                 <div class="options_section" v-if="currentStep == 7">
                     <p class="steps_info" style="margin: 40px 0 20px 0;">Способ ввода электропроводки в здание:</p>
                     <div class="ground_wrapper system">
@@ -197,8 +204,6 @@
                         </label>
                     </div>
                 </div>
-
-
 
                 <div class="options_section" v-if="currentStep == 8">
                     
@@ -291,28 +296,10 @@
                         <p class="wires_count" v-if="result.wires == 'Не знаю'">Количество проводов: <strong></strong>{{result.wires}}</strong></p>
                     </div>
                 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                 <div class="full_img_section" :class="{masked: isMasked}">
                     <div class="img_box">
                         <img v-if="mainRoof != '' " :src="fullImgPath">
                     </div>
-                    
-
                     <div class="steps_breadcrumbs">
                         <div class="steps_breadcrumb" v-if="result.shape != '' && currentStep >= 2">{{result.shape}} крыша</div>
                         <div class="steps_breadcrumb" v-if="result.material != '' && currentStep >= 3">{{result.material}}</div>
@@ -340,6 +327,10 @@
                         <span class="next_step">{{currentStep + counterPlus}}</span> : 
                         <span class="next_cat">{{steps['step_' + (currentStep + counterPlus) + '_name']}}</span>
                     </div>
+
+                    <a href="/" class="btn payment_btn" v-if="currentStep == 8" @click.prevent="toPayment()">
+                        Оплата
+                    </a>
 
                     <div class="btn pdf_btn" v-if="currentStep == 8" @click="savePdf()">
                         Скачать PDF

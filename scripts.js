@@ -117,12 +117,10 @@ var vm = new Vue({
 					alert(this.stepChoose[this.currentStep-1])
 					return false
 				}
-				if (this.currentStep == 6) {
-					if(this.result.priming == ""){
+				if (this.currentStep == 6 && this.result.priming == "") {
 						alert(`Выберете Тип грунта`)
 						return false
 					}
-				}
 				if (this.currentStep == 7) {
 					if(this.result.grounding_sustem == ""){
 						alert(`Выберете Способ ввода электропроводки в здание`)
@@ -235,6 +233,11 @@ var vm = new Vue({
 				]
 			}
 			pdfMake.createPdf(docInfo).download('price.pdf');
+		},
+
+		toPayment(){
+			localStorage.setItem("paymentTable", $($("#result_table")[0]).html())
+			location.href = "http://calc/oplata/oplata.html"
 		}
 	},
 
@@ -277,7 +280,6 @@ var vm = new Vue({
 
 			if(this.optionsCodes.chimney_code == "two"){
 				$(".two_chi").css("display","block")
-				console.log($(".two_chi"))
 			}
 
 			if(this.optionsCodes.chimney_code == "three"){
@@ -292,9 +294,9 @@ var vm = new Vue({
 	}
 })
 
-$( ".options_section").on( "click", ".cr_element", function() {
+/* $( ".options_section").on( "click", ".cr_element", function() {
 	$(".cr_element.active").removeClass("active")
 	$(this).addClass("active")
-});
+}); */
 
 
